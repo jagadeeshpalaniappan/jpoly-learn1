@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>jpoly-learn1-app test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/jpoly-learn1-app/jpoly-learn1-app.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <jpoly-learn1-app></jpoly-learn1-app>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('jpoly-learn1-app', function() {
+
+        test('instantiating the element works', function() {
+          var element = fixture('basic');
+          assert.equal(element.is, 'jpoly-learn1-app');
+        });
+
+      });
+    </script>
+  </body>
+</html>
