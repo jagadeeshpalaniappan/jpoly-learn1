@@ -1,0 +1,109 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="step1-element">
+    <template>
+
+        <h1>Learn -Step1</h1>
+
+        <hr/>
+
+        <h4>Two Way -Data Binding</h4>
+
+        <p>Input: <input type="text" value="{{myValue1::input}}"/></p>
+
+        <p>Output: {{myValue1}}</p>
+
+        <hr/>
+
+        <h4>Two Way -Data Binding (Default Val)</h4>
+
+        <p>Input: <input type="text" value="{{myValue2::input}}"/></p>
+
+        <p>Output: {{myValue2}}</p>
+
+        <hr/>
+        <h4>Array :: (Primitive values wont work)</h4>
+        <p>{{myArrVal1}}</p>
+        <ul>
+            <template is="dom-repeat" items="{{myArrVal1}}">
+                <li>{{item}}</li>
+            </template>
+        </ul>
+
+        <hr/>
+        <h4>Array :: (works)</h4>
+        <p>{{myArrVal2}}</p>
+        <ul>
+            <template is="dom-repeat" items="{{myArrVal2}}">
+                <li>{{item}}</li>
+            </template>
+        </ul>
+
+        <hr/>
+        <h4>Array :: (works)</h4>
+        <p><input type="text" value="{{newArrVal::input}}"/> <button on-click="addVal">Add</button></p>
+        <ul>
+            <template is="dom-repeat" items="{{myArrVal3}}">
+                <li>{{item}}  <a href="#" on-click="removeVal">Delete</a></li>
+            </template>
+        </ul>
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'step1-element',
+            ready: function () {
+                console.log("<step1-element> Element is Ready");
+                this.myValue2 = "Jagadeesh";
+
+                this.myArrVal1 = ['a','b','c'];
+                //arrayVal.push("value") --> won't work
+                this.myArrVal1.push("d");
+                this.myArrVal1.push("e");
+                this.myArrVal1.push("f");
+
+
+                this.myArrVal2 = ['a','b','c'];
+                //this.push("arrayName","value") --> works
+                this.push("myArrVal2","d");
+                this.push("myArrVal2","e");
+                this.push("myArrVal2","f");
+
+
+                this.myArrVal3 = ['a','b','c'];
+                //this.push("arrayName","value") --> works
+                this.push("myArrVal3","d");
+                this.push("myArrVal3","e");
+                this.push("myArrVal3","f");
+
+
+
+
+                console.log(this.myArrVal1);
+            },
+            addVal: function(){
+                //console.log(this.newArrVal);
+
+                this.push("myArrVal3",this.newArrVal);
+
+                //reset: newArrVal
+                this.newArrVal="";
+
+            },
+            removeVal: function(e){
+                //console.log(e.model.item);
+
+                //find remove index
+                var itemIndex = this.myArrVal3.indexOf(e.model.item);
+
+                //remove val -by index
+                //this.myArrVal3.splice(itemIndex, 1);
+                this.splice('myArrVal3', itemIndex, 1);
+
+            }
+        });
+    </script>
+</dom-module>

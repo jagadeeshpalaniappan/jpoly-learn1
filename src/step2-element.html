@@ -1,0 +1,134 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="step2-element">
+    <template>
+
+        <h1>Learn -Step2</h1>
+
+        <hr/>
+
+        <h4>Observer Example</h4>
+
+        <p>Input: <input type="text" value="{{myValue1::input}}"/></p>
+
+        <p>Output: {{myValue1}}</p>
+
+
+        <hr/>
+
+        <h4>Two Way -Data Binding</h4>
+
+        <p><input type="text" value="{{newArrVal::input}}"/> <button on-click="addVal">Add</button></p>
+        <ul>
+            <template is="dom-repeat" items="{{myArrVal1}}">
+                <li>{{item.val}} (id: {{item.id}}) <a href="#" on-click="removeVal">Delete</a></li>
+            </template>
+        </ul>
+
+        <hr/>
+
+
+        <h4>Change Obj</h4>
+
+        <p>
+            <button on-click="setObjPropValWay1">Set ObjPropVal Way1 (Wont Work)</button>
+            <button on-click="setObjPropValWay2">Set ObjPropVal Way2</button>
+            <button on-click="setObjPropValWay3">Set ObjPropVal Way3</button>
+        </p>
+        <p>Input: <input type="text" value="{{myObjVal1.prop1::input}}"/></p>
+
+        <p>Output: {{myObjVal1.prop1}}  <button on-click="getObjPropVal">Get Obj Prop Val</button> </p>
+
+
+        <hr/>
+
+
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'step2-element',
+            properties: {
+                myValue1:{
+                    type: String,
+                    value: "My Default Val1",
+                    observer: '_myValue1Observer'
+                }
+            },
+            ready: function () {
+                console.log("<step2-element> Element is Ready");
+
+                //Unique Id::
+                this.uniqueId = 1;
+
+                this.myArrVal1 = [
+                    {id: this.uniqueId++, val: "a"},
+                    {id: this.uniqueId++, val: "b"},
+                    {id: this.uniqueId++, val: "c"}
+                ];
+                this.push("myArrVal1", {id: this.uniqueId++, val: "d"});
+                this.push("myArrVal1", {id: this.uniqueId++, val: "e"});
+
+
+                //Chnage Obj:
+                this.myObjVal1 ={prop1: "Jag", prop2: "hello"};
+
+
+
+            },
+
+            _myValue1Observer: function(newMyValue1, oldMyValue1){
+
+                //Whenever the 'myValue1' value setObjPropValWays -- observer will be called with 'new' & 'old' value
+                console.log("New: "+newMyValue1);
+                console.log("Old: "+oldMyValue1);
+
+            },
+
+            addVal: function(){
+
+                var newValObj = {id: this.uniqueId++, val: this.newArrVal};
+                this.push("myArrVal1",newValObj);
+
+                //reset:
+                this.newArrVal = "";
+
+            },
+            removeVal: function(e){
+                //console.log(e.model.item);
+
+                var clickedEleVal = e.model.item;
+
+                //find remove index
+                var itemIndex = this.myArrVal1.indexOf(clickedEleVal);
+
+                console.log("itemIndex::" + itemIndex);
+                //remove val -by index
+                this.splice('myArrVal1', itemIndex, 1);
+
+            },
+            setObjPropValWay1: function(){
+                //This will not reflect
+                this.myObjVal1.prop1 = "Way1";
+            },
+            setObjPropValWay2: function(){
+                //this.myObjVal1.prop1 = "Change2";
+                this.set('myObjVal1.prop1', 'Way2');
+            },
+            setObjPropValWay3: function(){
+                this.myObjVal1.prop1 = "Way3";
+                this.notifyPath('myObjVal1.prop1');
+            },
+
+            getObjPropVal: function(){
+                //This will not reflect
+                var cuurentVal = this.myObjVal1.prop1;
+                var cuurentValAltWay = this.get('myObjVal1.prop1');
+                alert(cuurentVal +"--"+ cuurentValAltWay);
+            }
+
+        });
+    </script>
+</dom-module>
