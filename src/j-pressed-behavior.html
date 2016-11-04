@@ -1,0 +1,37 @@
+<script>
+    var JCommonBehaviors = JCommonBehaviors || {};
+    JCommonBehaviors.PressedBehavior = {
+        properties: {
+            pressed: {
+                type: Boolean,
+                default: false,
+                readOnly: true
+            }
+        },
+        listeners: {
+            mousedown: '_addPressed',
+            mouseup: '_removePressed'
+        },
+        created: function () {
+            console.log(this.localName + '#' + this.id + ' was created');
+        },
+        _addPressed: function () {
+            console.log(this.localName + '#'+"_addPressed");
+
+            this.classList.add('pressed');
+            this._onPressStart();
+        },
+        _removePressed: function () {
+            console.log(this.localName + '#'+"_removePressed");
+
+            this.classList.remove('pressed');
+            this._onPressEnd();
+        },
+        _onPressStart: function () {
+            // abstract
+        },
+        _onPressEnd: function () {
+            // abstract
+        }
+    };
+</script>

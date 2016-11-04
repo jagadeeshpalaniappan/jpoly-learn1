@@ -1,0 +1,234 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>jpoly-learn1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+
+</head>
+<body>
+
+
+<!-- Default Constructor -->
+<script>
+
+    //when all imports in the document have finished loading, 'HTMLImports.whenReady' gets invoked
+    HTMLImports.whenReady(function () {
+
+        var createCallbackFn = function () {
+            console.log("<my-element-1> created");
+            //console.log(this);
+            this.textContent = 'My element 1';
+        };
+
+
+        /*
+         * Polymer function registers the element with the browser and returns a constructor
+         * that can be used to create new instances of your element via code.
+         * */
+
+
+        // 1. Register an element (with default constructor)
+        var MyElement1 = Polymer({is: 'my-element-1', created: createCallbackFn});
+
+        // 2. create an instance with createElement:
+        var myElement1 = document.createElement('my-element-1');
+
+        // 2. ... or with the constructor:
+        //var myElement1 = new MyElement1();
+
+        document.body.appendChild(myElement1);
+
+    });
+
+
+</script>
+
+
+<!--Custom Constructor -->
+
+<script>
+
+    HTMLImports.whenReady(function () {
+
+
+        // 1. Register an element (with custom constructor)
+        var MyElement2 = Polymer({
+            is: 'my-element-2',
+            factoryImpl: function (fname, lnmae) {
+                console.log("Custom Constructor");
+                this.fname = fname;
+                this.lname = lnmae;
+                this.innerHTML = "<p> <b>" + this.fname + "</b> , " + this.lname + "</p>";
+
+            }
+
+        });
+
+        //factoryImpl method is not called if you create using 'document.createElement'
+        //var myElement2 = document.createElement('my-element-1');
+
+
+        //Custom Constructor
+        var myElement2 = new MyElement2("Jagadeesh", "P");
+
+        document.body.appendChild(myElement2);
+
+    });
+
+
+</script>
+
+
+<!-- Extend native HTML elements -->
+<script>
+
+    HTMLImports.whenReady(function () {
+
+        // 1. Extend native HTML elements (currently polymer only supports input,button )
+        var MyInput1 = Polymer({
+            is: 'my-input-1',
+            extends: 'input',
+            created: function () {
+                this.style.border = '1px solid red';
+            }
+
+        });
+
+
+        var myInputEle1 = document.createElement('input', 'my-input');
+        console.log(myInputEle1 instanceof HTMLInputElement); // true
+
+        var myInputEle2 = new MyInput1();
+        console.log(myInputEle2 instanceof HTMLInputElement); // true
+
+        document.body.appendChild(myInputEle2);
+
+
+    });
+
+
+</script>
+
+
+<!--Lifecycle callbacks -->
+<!--
+ORDER:
+1. created callback.
+2. Local DOM initialized (This means that local DOM children are created, their property values are set as specified in the template, and ready has been called on them, assuming they are registered).
+3. ready callback.
+4. factoryImpl callback.
+5. attached callback.
+-->
+
+<script>
+
+    HTMLImports.whenReady(function () {
+
+
+        // 1. Register an element (with custom constructor)
+        var MyElement3 = Polymer({
+
+            is: 'my-element-3',
+
+            created: function () {
+                //Called when the element has been created, but before property values are set and local DOM is initialized.
+                console.log(this.localName + '#' + this.id + ' was created');
+                this.innerHTML = "<p>My Element-3 (with all life cycle callbacks)</p>"
+            },
+
+            ready: function () {
+                //Called after property values are set and local DOM is initialized.
+                console.log(this.localName + '#' + this.id + ' has local DOM initialized');
+
+                // Local DOM is a subtree of elements created and managed by your element.
+                // Local DOM is separate from the element's children
+
+
+                //Called when,
+                //---Its local DOM template has been instantiated.
+                //---All of the registered elements inside the element's local DOM are ready, and have had their ready methods called.
+                //TODO
+
+
+                // access a local DOM element by ID using this.$
+                //this.$.jHeaderId.textContent = 'Hello!';
+
+            },
+
+            attached: function () {
+                //Called after the element is attached to the document.
+                console.log(this.localName + '#' + this.id + ' was attached');
+            },
+
+            detached: function () {
+                //Called after the element is detached from the document.
+                console.log(this.localName + '#' + this.id + ' was detached');
+            },
+
+            attributeChanged: function (name, type) {
+                //Called when one of the element's attributes is changed.
+                console.log(this.localName + '#' + this.id + ' attribute ' + name +
+                        ' was changed to ' + this.getAttribute(name));
+            }
+
+        });
+
+
+        //var myElement3 = document.createElement('my-element-3');
+
+        //Custom Constructor
+        var myElement3 = new MyElement3();
+
+        document.body.appendChild(myElement3);
+
+    });
+
+
+</script>
+
+
+<!--Default (HTML attributes) -->
+
+<script>
+
+    HTMLImports.whenReady(function () {
+
+
+        // 1. Register an element (with custom constructor)
+        var MyElement4 = Polymer({
+            is: 'my-element-4',
+            hostAttributes: {
+                'string-attribute': 'red',
+                'style': 'color: red;',
+                'active': true,
+                tabindex: 0
+            },
+            created: function () {
+                this.textContent = "my-element-4";
+            }
+
+        });
+
+        //factoryImpl method is not called if you create using 'document.createElement'
+        //var myElement4 = document.createElement('my-element-1');
+
+
+        //Custom Constructor
+        var myElement4 = new MyElement4();
+
+        document.body.appendChild(myElement4);
+
+    });
+
+
+</script>
+
+
+
+</body>
+</html>

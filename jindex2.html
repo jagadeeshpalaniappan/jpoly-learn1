@@ -1,0 +1,154 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>jpoly-learn1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+
+</head>
+<body>
+
+
+<my-element-1 person-name="Jagadeesh" salary="2000" married address='{"city":"Sunnyvale"}' kids-name='["a","b"]'></my-element-1>
+
+<br/>
+
+<my-element-2></my-element-2>
+
+<br/>
+
+
+<cat-element></cat-element>
+
+<br/>
+
+
+<!--Properties -->
+
+<script>
+
+    HTMLImports.whenReady(function () {
+
+
+        // 1. Register an element (with custom constructor)
+        var MyElement1 = Polymer({
+            is: 'my-element-1',
+            properties: {
+                personName: String,
+                salary: Number,
+                married: Boolean,
+                address: Object,
+                kidsName: Array
+            },
+            ready: function () {
+
+                var myContent = "Hi, " + this.personName + "--" + this.married + "--" + this.salary + "--" + this.address.city;
+
+                console.log(this.kidsName);
+
+                this.textContent = myContent;
+            }
+
+        });
+
+
+    });
+
+
+</script>
+
+
+<!--Properties (with Default Values)-->
+
+<script>
+
+    HTMLImports.whenReady(function () {
+
+
+        // 1. Register an element (with custom constructor)
+        var MyElement1 = Polymer({
+            is: 'my-element-2',
+            properties: {
+                personName: {
+                    type: String,
+                    value: "Abhilash"
+                },
+                salary: {
+                    type: Number,
+                    value: 3000
+                },
+                married: {
+                    type: Boolean,
+                    value: true
+                },
+                address: {
+                    type: Object,
+                    value: function () {
+                        return {city: "San Jose"};
+                    }
+                },
+                kidsName: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                }
+
+            },
+            ready: function () {
+
+                var myContent = "Hi, " + this.personName + "--" + this.married + "--" + this.salary + "--" + this.address.city;
+
+                console.log(this.kidsName);
+
+                this.textContent = myContent;
+            }
+
+        });
+
+
+    });
+
+
+</script>
+
+
+
+<script>
+
+    HTMLImports.whenReady(function () {
+
+
+        Polymer({
+            is: 'cat-element',
+            _says: 'meow',
+            speak: function (val) {
+                console.log(this._says);
+                this.textContent = this._says+" "+val;
+            }
+        });
+
+
+        var cat1 = document.querySelector('cat-element');
+        cat1.speak(1);
+
+
+        var cat2 = document.createElement('cat-element');
+        document.body.appendChild(cat2);
+        cat2.speak(2);
+
+
+
+    });
+
+
+</script>
+
+
+
+</body>
+</html>

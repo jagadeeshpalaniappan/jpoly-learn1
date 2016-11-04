@@ -1,0 +1,269 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>jpoly-learn1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="./bower_components/polymer/polymer.html">
+
+</head>
+<body>
+
+
+<h3>Styles Scope:</h3>
+
+<!--Local DOM (child elements) or (Light DOM)-->
+<dom-module id="j-element1">
+
+    <template>
+
+        <style>
+
+            :host{
+                display: block;
+                border: 1px solid red;
+            }
+
+            /*this wont applies to child-elements (content)*/
+            /*this applies only to Local DOM Elements (Shadow DOM)*/
+            .xx-big{
+                font-size: xx-large;
+                color: red;
+            }
+
+            /*this applies only to child-elements (content)*/
+            .child-wrapper ::content > .big{
+
+                font-size: large;
+                color: dodgerblue;
+            }
+
+            /*this wont applies to child-elements (content)*/
+            #orange{
+                color: deeppink;
+            }
+
+            /*this applies only to child-elements (content)*/
+            .child-wrapper ::content > #orange{
+                color: orange;
+            }
+
+        </style>
+
+        <p class="xx-big">I am Local DOM (xx-big class works)</p>
+        <p class="big">I am Local DOM (big doesnt work)</p>
+
+        <div class="child-wrapper">
+
+            <content></content>
+
+        </div>
+
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-element1'
+        });
+    </script>
+
+</dom-module>
+
+
+<p class="xx-big">I'm not an element (xx-big class wont work) </p>
+
+<j-element1>
+    <p class="xx-big">I'm Child Element (xx-big class wont work) </p>
+    <p class="big">I'm Child Element (big class works) </p>
+    <p id="orange">I'm Child Element (orange child) </p>
+</j-element1>
+
+
+<br/>
+<br/>
+<hr/>
+<!---------------------------------------------------------------------------->
+
+
+
+<h3>CSS Variable or Custom CSS properties or Shim :</h3>
+<dom-module id="j-toolbar1">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                border: 1px solid red;
+                background-color: #f2f2f2;
+                margin-bottom: 5px;
+            }
+            .title {
+                color: var(--j-toolbar-title-color);
+            }
+        </style>
+
+        <h4 class="title">{{title}}</h4>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-toolbar1',
+            properties: {
+                title: String
+            }
+        });
+    </script>
+
+</dom-module>
+
+
+<dom-module id="j-element2">
+
+    <template>
+
+        <style>
+
+            /* Make all toolbar titles in this host green by default */
+            :host {
+                --j-toolbar-title-color: green;
+            }
+
+            /* Make only toolbars with the .warning class red */
+            .warning {
+                --j-toolbar-title-color: red;
+            }
+
+        </style>
+
+        <j-toolbar1 title="This one is green."></j-toolbar1>
+        <j-toolbar1 title="This one is green too."></j-toolbar1>
+
+        <j-toolbar1 class="warning" title="This one is red."></j-toolbar1>
+
+    </template>
+
+    <script>
+        Polymer({ is: 'j-element2'});
+    </script>
+
+</dom-module>
+
+
+
+<j-element2></j-element2>
+
+<br/>
+<br/>
+<hr/>
+<!---------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------->
+
+
+
+<h3>Custom CSS mixins @apply :</h3>
+<p>Its difficult to set one by one variable for each attribute 'values'</p>
+<p>Instead, apply 'set of rules' (attribute as well as value)</p>
+
+<dom-module id="j-toolbar2">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                border: 1px solid red;
+                background-color: #f2f2f2;
+                margin-bottom: 5px;
+
+                /* apply a mixin */
+                @apply(--j-toolbar-theme);
+            }
+            .title {
+                @apply(--j-toolbar-title-theme);
+            }
+        </style>
+
+        <h4 class="title">{{title}}</h4>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-toolbar2',
+            properties: {
+                title: String
+            }
+        });
+    </script>
+
+</dom-module>
+
+
+<dom-module id="j-element3">
+
+    <template>
+
+        <style>
+
+            /* Apply custom theme to toolbars */
+            :host {
+
+                --j-toolbar-theme: {
+                     background-color: #b0f1b0;
+                     padding: 0 10px;
+                     border-radius: 4px;
+                     border: 1px solid gray;
+                 };
+
+                --j-toolbar-title-theme: {
+                     color: green;
+                 };
+
+            }
+
+            /* Make only toolbars with the .warning class red and bold */
+            .warning {
+
+                --j-toolbar-title-theme: {
+                     color: red;
+                     font-weight: bold;
+                 };
+
+            }
+
+        </style>
+
+        <j-toolbar2 title="This one is green."></j-toolbar2>
+        <j-toolbar2 title="This one is green too."></j-toolbar2>
+
+        <j-toolbar2 class="warning" title="This one is red."></j-toolbar2>
+
+    </template>
+
+    <script>
+        Polymer({ is: 'j-element3'});
+    </script>
+
+</dom-module>
+
+
+
+<j-element3></j-element3>
+
+<br/>
+<br/>
+<hr/>
+<!---------------------------------------------------------------------------->
+
+
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>jpoly-learn1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="./bower_components/polymer/polymer.html">
+
+</head>
+<body>
+
+
+<h3>Event listener:</h3>
+<dom-module id="j-event-element1">
+    <template>
+        <div>I will respond</div>
+        <div>to a tap on</div>
+        <div>any of my children!</div>
+        <div id="special">I am special!</div>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'j-event-element1',
+
+            listeners: {
+                'tap': 'regularTap',
+                'special.tap': 'specialTap'
+            },
+
+            regularTap: function (e) {
+                alert("Thank you for tapping");
+            },
+
+            specialTap: function (e) {
+                alert("It was special tapping");
+            }
+
+        });
+    </script>
+</dom-module>
+
+
+<j-event-element1></j-event-element1>
+
+<br/>
+<br/>
+<hr/>
+<!---------------------------------------------------------------------------->
+
+
+<h3>Annotated event listener:</h3>
+<dom-module id="j-event-element2">
+    <template>
+        <button>Btn1 (No Event)</button>
+        <button on-tap="handleTap">Btn2</button>
+    </template>
+    <script>
+        Polymer({
+            is: 'j-event-element2',
+            handleTap: function () {
+                alert('Ow!');
+            }
+        });
+    </script>
+</dom-module>
+
+
+<j-event-element2></j-event-element2>
+
+<br/>
+<br/>
+<hr/>
+<!---------------------------------------------------------------------------->
+
+
+<h3>Add and Remove listeners:</h3>
+<dom-module id="j-event-element3">
+    <template>
+        <button id="btn1">Btn1 (No Event)</button>
+        <button id="btn2" on-tap="handleTap">Btn2</button>
+
+        <p>
+            <button on-tap="enableBtn1TapEvent">Enable Btn1</button>
+            <button on-tap="disableBtn1TapEvent">Disable Btn1</button>
+        </p>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'j-event-element3',
+            handleTap: function (e) {
+                alert(e.target.id+'-- Tap Worked!!!');
+            },
+            enableBtn1TapEvent: function () {
+                this.listen(this.$.btn1, 'tap', 'handleTap');
+            },
+            disableBtn1TapEvent: function () {
+                this.unlisten(this.$.btn1, 'tap', 'handleTap');
+            }
+        });
+    </script>
+</dom-module>
+
+
+<j-event-element3></j-event-element3>
+
+<br/>
+<br/>
+<hr/>
+<!---------------------------------------------------------------------------->
+
+
+</body>
+</html>

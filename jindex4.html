@@ -1,0 +1,87 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>jpoly-learn1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+
+</head>
+<body>
+
+
+<!--Local DOM template-->
+<dom-module id="j-element1">
+
+    <template>I am j-element1 ooooh! (This is Local DOM) (Not Children)</template>
+
+    <script>
+        Polymer({
+            is: 'j-element1'
+        });
+    </script>
+
+</dom-module>
+
+<j-element1></j-element1>
+
+<br/>
+<br/>
+
+<!--Local DOM (Selector) -->
+<dom-module id="j-element2">
+
+    <template>Hello World from <span id="myName"></span>!</template>
+
+    <script>
+        Polymer({
+            is: 'j-element2',
+            ready: function() {
+
+                //find by id 'myName' --inside Local DOM
+                //this.$.myName.textContent = this.tagName;
+
+                //find by CSS selector '#myName' --inside Local DOM
+                this.$$("#myName").textContent = this.tagName+" ***";
+
+
+            }
+        });
+    </script>
+
+</dom-module>
+
+<j-element2></j-element2>
+
+<br/>
+<br/>
+
+<!--Local DOM (child elements) or (Light DOM)-->
+<dom-module id="j-element3">
+
+    <template>
+        <h3>I am j-element3</h3>
+        <p><u>My Child Elements (Light DOM) ::</u></p>
+        <content></content>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-element3'
+        });
+    </script>
+
+</dom-module>
+
+<j-element3>
+    <p>I'm j-element3 (child) &lt;p&gt; </p>
+    <span>I'm j-element3 (child) &lt;span&gt; </span>
+</j-element3>
+
+
+
+</body>
+</html>
