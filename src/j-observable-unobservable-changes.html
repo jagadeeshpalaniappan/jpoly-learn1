@@ -1,0 +1,254 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+
+<dom-module id="j-observable-unobservable-changes">
+    <template>
+
+
+        <h3>Observable Changes :</h3>
+        <ul>
+            <li>Polymer can observe/identify these changes</li>
+        </ul>
+
+
+        <p>owner: </p>
+            <p><b> {{owner}} </b>
+            <button on-click="changeOwnerWay1">Change1 </button>
+
+        </p>
+
+        <hr/>
+
+        <h3>Unobservable Changes :</h3>
+        <ul>
+            <li>Polymer can not observe/identify these changes</li>
+        </ul>
+
+
+        <h5>Case-1 : (Sub Property change)</h5>
+        <p>address.street: </p>
+        <p><b>{{address.street}}</b>
+            <button on-click="changeAddressWay1">Change1 (Won't Work)</button>
+            <button on-click="changeAddressWay2">Change2</button>
+            <button on-click="changeAddressWay3">Change3</button>
+
+            <button on-click="getAddressWay1">Get1</button>
+            <button on-click="getAddressWay2">Get2</button>
+        </p>
+
+        <h5>Case-2 : (Array change)</h5>
+        <p>users: </p>
+        <ul>
+            <template is="dom-repeat" items="{{users}}">
+                <li>{{item.name}}</li>
+            </template>
+        </ul>
+        <p>
+            <button on-click="pushUserWay1">Push1 (Won't Work)</button>
+            <button on-click="pushUserWay2">Push2</button>
+            <button on-click="pushUserWay3">Push3</button>
+
+
+            <button on-click="updateFirstElement1">Update 1st Element (1)</button>
+            <button on-click="updateFirstElement2">Update 1st Element (2)</button>
+
+            <button on-click="getFirstElementByPath1">Get 1st Element (1)</button>
+            <button on-click="getFirstElementByPath2">Get 1st Element (2)</button>
+            <button on-click="getFirstElementByKey3">Get 1st Element (3)</button>
+
+            <button on-click="deleteFirstElementByIndex1">Delete 1st Element (1)</button>
+            <button on-click="deleteFirstElementByIndexPath2">Delete 1st Element (2)</button>
+            <button on-click="deleteFirstElementByKeyPath3">Delete 1st Element (3)</button>
+            <button on-click="addElementInBegining">Add Element in Begining</button>
+
+
+        </p>
+
+
+        <h3>Override dirty checking  (Not Working) :( </h3>
+
+        Not Working: <button on-click="refreshUsersArray">Refresh</button>
+
+
+        <h3>Array items must be unique (Not Working) :</h3>
+
+        <p> <input type="text" value="{{jInput1::input}}" /> <button on-click="addArray1">Add</button> </p>
+        <ul>
+            <template is="dom-repeat" items="{{jArray1}}">
+                <li>{{item}}</li>
+            </template>
+        </ul>
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-observable-unobservable-changes',
+            ready: function () {
+
+                //######## Observable changes ############
+                //      --Polymer can observe these changes
+                this.owner = "Jagadeesh-Owner";
+                this.owner = "Jagadeesh-Owner-0";
+
+
+                //######## Un Observable changes #########
+                //      --Polymer can not observe these changes
+
+                //Case-1 : (Sub Property change)
+                this.address = {street: "J-Street"};
+
+                //unobservable change
+                this.address.street = 'J-Street-0';
+
+
+                //Case-2 : (Array Change)
+                this.users = [{name: 'J-User'}];
+                //unobservable change
+                this.users.push({name: 'J-User-0'});
+
+
+
+                this.jArray1 = [1,1,2];
+
+
+            },
+            changeOwnerWay1: function () {
+                this.owner = "Jagadeesh-Owner-1";
+            },
+            changeAddressWay1: function () {
+                //unobservable change
+                this.address.street = "J-Street-1";
+            },
+            changeAddressWay2: function () {
+
+                //observable change --using polymer setter fn (obj)
+                this.set("address.street","J-Street-2");
+            },
+            changeAddressWay3: function () {
+
+                // unobservable change
+                this.address.street = "J-Street-3";
+
+                //but, manually notifying Polymer --using polymer notify fn
+                this.notifyPath('address.street');
+
+            },
+            getAddressWay1: function(){
+                var addressStreet = this.address.street;
+                alert(addressStreet);
+            },
+            getAddressWay2: function(){
+                var addressStreet = this.get("address.street");
+                alert(addressStreet);
+            },
+            pushUserWay1: function () {
+
+                // unobservable change
+                this.users.push({name: 'J-User-1'});
+            },
+            pushUserWay2: function () {
+
+                // observable change  --using polymer setter fn (array)
+                this.push("users", {name: 'J-User-2'});
+            },
+            pushUserWay3: function () {
+                // unobservable change
+                this.users.push({name: 'J-User-3'});
+
+                var lastIndex = this.users.length-1;
+
+                //but, manually notifying Polymer --using polymer notify fn
+                this.notifySplices('users', [
+                    {index: lastIndex, removed: [], addedCount: 1, object: this.users, type: 'splice'}
+                ]);
+            },
+
+            updateFirstElement1:function(){
+
+                this.set("users.0", {name: "First Element Updated-1"});
+            },
+            updateFirstElement2:function(){
+
+                this.users[0].name = "First Element Updated-2";
+                this.notifyPath("users.0.name", this.users[0].name);
+            },
+            getFirstElementByPath1:function(){
+
+                var firstElementName = this.get("users.0.name");
+                alert(firstElementName);
+
+            },
+            getFirstElementByPath2:function(){
+
+                // --- all represent the 'same path' ---
+                //var firstElementName = this.get("users.0.name");
+                //var firstElementName = this.get(["users.0", "name"]);
+                var firstElementName = this.get(["users",0, "name"]);
+                alert(firstElementName);
+
+
+            },
+            getFirstElementByKey3:function(){
+
+                var firstElementName = this.get("users.#0.name");
+                alert(firstElementName);
+
+            },
+            deleteFirstElementByIndex1:function(){
+
+                var startIndex = 0;
+                var noOfElementsToDelete = 1;
+                this.splice("users", startIndex, noOfElementsToDelete);
+            },
+            deleteFirstElementByIndexPath2:function(){
+
+                //Get 1st item by index
+                var item = this.get("users.0");
+
+                //Find the 'index' of an array item
+                var index = this.users.indexOf(item);
+
+                if (index != -1) {
+                    //Delete the item
+                    this.splice("users", index, 1);
+                }
+
+            },
+            deleteFirstElementByKeyPath3:function(){
+
+                //Get 1st item by key
+                var item = this.get('users.#0');
+
+                //Find the 'index' of an array item
+                var index = this.users.indexOf(item);
+
+                if (index != -1) {
+                    //Delete the item
+                    this.splice("users", index, 1);
+                }
+
+            },
+            addElementInBegining:function(){
+
+                this.splice("users", 0, 0, {name: "I'm First"});
+            },
+            refreshUsersArray:function(){
+
+                var tmpUsers = this.users;
+                this.users = [];
+                //this.users = tmpUsers;
+
+                //this.set("users", tmpUsers);
+
+//                this.notifyPath('users');
+            },
+            addArray1 : function(){
+
+                this.push("jArray1", this.jInput1);
+            }
+
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,37 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="j-multi-property-observers-3">
+    <template>
+
+        <h5>Multi Property Observers 3 --path(wild-card) change</h5>
+        <p><code>user.name.*</code> </p>
+
+        <input value="{{user.name.first::input}}"
+               placeholder="First Name">
+        <input value="{{user.name.last::input}}"
+               placeholder="Last Name">
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-multi-property-observers-3',
+            properties: {
+                user: {
+                    type: Object,
+                    value: function () {
+                        return {'name':{}};
+                    }
+                }
+            },
+            observers: ['_anyChangeInNameObj(user.name.*)'],
+
+            _anyChangeInNameObj: function (changeRecord) {
+                console.log('path: ' + changeRecord.path);
+                console.log('value: ' + changeRecord.value);
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,68 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+
+<dom-module id="j-emp-list">
+
+
+    <template>
+        Search:
+        <input value="{{searchString::input}}">
+
+
+        <template is="dom-repeat" items="{{employees}}" as="employee"
+                  filter="{{computeFilter(searchString)}}">
+            <div>{{employee.lastname}}, {{employee.firstname}}</div>
+        </template>
+
+
+    </template>
+
+
+    <script>
+        Polymer({
+            is: 'j-emp-list',
+
+            //whenever, 'searchString::input' changes, 'computeFilter' will be invoked
+            computeFilter: function (string) {
+
+
+                if (!string) {
+                    // set filter to null to disable filtering
+                    return null;
+                } else {
+
+                    //Search String 'Input'
+                    string = string.toLowerCase();
+
+                    // return a filter fn for the current search string
+
+                    var filterFn = function (emp) {
+                        var first = emp.firstname.toLowerCase();
+                        var last = emp.lastname.toLowerCase();
+
+                        //related 'string' available or not
+                        return (first.indexOf(string) != -1 || last.indexOf(string) != -1);
+                    };
+
+
+                    return filterFn;
+                }
+
+
+            },
+            properties: {
+                employees: {
+                    type: Array,
+                    value: function () {
+                        return [
+                            {firstname: "Jack", lastname: "Aubrey"},
+                            {firstname: "Anne", lastname: "Elliot"},
+                            {firstname: "Stephen", lastname: "Maturin"},
+                            {firstname: "Emma", lastname: "Woodhouse"}
+                        ]
+                    }
+                }
+            }
+        });
+    </script>
+</dom-module>

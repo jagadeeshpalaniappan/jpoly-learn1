@@ -1,0 +1,50 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="j-single-property-observer">
+    <template>
+
+        <h5>Single Property Observer</h5>
+
+        <p>{{prop1}} <button on-click="changeProp1">Change</button></p>
+
+        <p><input type="text" value="{{prop2::input}}"> </p>
+
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-single-property-observer',
+            properties: {
+                prop1:{
+                    type: String,
+                    observer: '_prop1Changed'
+                },
+                prop2:{
+                    type: String,
+                    observer: '_prop2Changed'
+                }
+            },
+            ready: function(){
+
+                this.prop1 = "Jagadeesh";
+
+            },
+            changeProp1: function(){
+
+                var prop1Val = this.get("prop1");
+                this.set("prop1", prop1Val+"--Changed");
+            },
+            _prop1Changed : function(newProp1Val, oldProp1Val){
+                console.log("newProp1Val: "+ newProp1Val);
+                console.log("oldProp1Val: "+ oldProp1Val);
+            },
+            _prop2Changed : function(newProp2Val, oldProp2Val){
+                console.log("newProp2Val: "+ newProp2Val);
+                console.log("oldProp2Val: "+ oldProp2Val);
+            },
+        });
+    </script>
+</dom-module>

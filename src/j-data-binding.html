@@ -1,0 +1,56 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./j-data-binding-ele.html">
+
+<dom-module id="j-data-binding">
+
+
+
+    <template>
+
+        <style>
+            .text-red{
+                color: red;
+            }
+            
+            .text-blue{
+                color: deepskyblue;
+            }
+        </style>
+
+        <h3>Data Binding</h3>
+
+        <h5>1. Property Binding</h5>
+        <j-data-binding-ele prop1="{{jInput1}}"></j-data-binding-ele>
+
+
+        <h5>2. Attribute Binding</h5>
+        <p class="{{jclassName}}"> This wont Work </p>
+        <p class$="{{jclassName}}"> This Works </p>
+
+
+        <p style="color: {{jColor}};"> This wont Work </p>
+        <p style$="color: {{jColor}};"> This Works </p>
+
+        <p class-list="{{jclassList}}">Hello Class List (not working)</p>
+
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-data-binding',
+            ready: function(){
+
+                this.jInput1 = "Hello Jag!!";
+
+                this.jclassName = "text-red";
+                this.jColor = "red";
+
+                this.jclassList = ['text-red', 'text-blue'];
+            }
+
+        });
+    </script>
+</dom-module>

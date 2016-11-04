@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./j-single-property-observer.html">
+<link rel="import" href="./j-multi-property-observers-1.html">
+<link rel="import" href="./j-multi-property-observers-2.html">
+<link rel="import" href="./j-multi-property-observers-3.html">
+<link rel="import" href="./j-multi-property-observers-4.html">
+<link rel="import" href="./j-computed-property.html">
+
+<dom-module id="j-observers-computed-properties">
+    <template>
+
+        <h3>Observers</h3>
+        <ul>
+            <li>when <u>observable changes</u> occur, Observer methods are invoked </li>
+            <li><b>Types:</b></li>
+            <li>Single Property Observer</li>
+            <li>Multi Property Observers</li>
+        </ul>
+
+
+
+
+        <j-single-property-observer></j-single-property-observer>
+
+        <j-multi-property-observers-1></j-multi-property-observers-1>
+        <j-multi-property-observers-2></j-multi-property-observers-2>
+        <j-multi-property-observers-3></j-multi-property-observers-3>
+        <j-multi-property-observers-4></j-multi-property-observers-4>
+
+
+        <h3>Computed properties</h3>
+        <ul>
+            <li>Computed properties are 'Virtual properties' based on one or more properties (computed value) </li>
+        </ul>
+
+        <j-computed-property></j-computed-property>
+
+
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-observers-computed-properties',
+            ready: function () {
+                //console.log("<j-observers-computed-properties> Element is Ready");
+
+
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,48 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="j-multi-property-observers-4">
+    <template>
+
+        <h5>Multi Property Observers 4 --Array change</h5>
+        <p><code>users.splices</code> </p>
+
+        <p>users: </p>
+        <ul>
+            <template is="dom-repeat" items="{{users}}">
+                <li>{{item}}</li>
+            </template>
+        </ul>
+        <p><input type="text" value="{{newUser::input}}"> <button on-click="addUser">Add</button> <button on-click="delFirstUser">Delete 1st User</button></p>
+
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-multi-property-observers-4',
+            properties: {
+                users: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                }
+            },
+            observers: ['_anyAddOrDeleteInUsersArray(users.splices)'],
+
+            _anyAddOrDeleteInUsersArray: function (changeRecord) {
+                console.log(changeRecord);
+
+            },
+
+            addUser: function(){
+                this.push("users", this.newUser);
+            },
+            delFirstUser: function(){
+                this.splice("users", 0, 1);
+            }
+        });
+    </script>
+</dom-module>

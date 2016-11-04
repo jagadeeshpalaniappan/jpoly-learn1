@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="j-multi-property-observers-2">
+    <template>
+
+        <h5>Multi Property Observers 2 --path(sub-property) change</h5>
+
+        <p>{{user.fname}} <button on-click="changeProp1">Change</button> Not Working</p>
+
+        <p><input type="text" value="{{user.fname::input}}"> </p>
+
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-multi-property-observers-2',
+            properties: {
+                user:{
+                    type: Object,
+                    value: function(){
+                        return {fname: "Jag"};
+                    }
+                }
+            },
+            observers : ['_userFirstNameChanged(user.fname)'],
+
+            changeProp1: function(){
+
+                var prop1Val = this.get("user.fname");
+                this.set("user.fname", prop1Val+"--Changed");
+            },
+            _userFirstNameChanged : function(userFname){
+                console.log("User First name (new val): "+ userFname);
+            }
+        });
+    </script>
+</dom-module>

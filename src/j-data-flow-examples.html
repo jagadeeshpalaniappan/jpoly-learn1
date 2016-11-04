@@ -1,0 +1,92 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./j-target-element1.html">
+<link rel="import" href="./j-target-element2.html">
+<link rel="import" href="./j-target-element3.html">
+<link rel="import" href="./j-target-element4.html">
+
+<dom-module id="j-data-flow-examples">
+    <template>
+
+
+        <h5>Example 1: Two-way binding</h5>
+        <code>{notify: true}  {{}}</code>
+        <ul>
+            <li>changes to "jHostInput1" propagate downward to "prop1" on child </li>
+            <li>changes to "prop1" propagate upward to "jHostInput1" on host</li>
+            <li>since child element prop1 is notifying,  host is also ready to take the child changes due to {{curly braces}} syntax</li>
+        </ul>
+
+
+
+        <p>jHostInput1 :: <input type="text" value="{{jHostInput1::input}}"/></p>
+        <j-target-element1 prop1="{{jHostInput1}}" ></j-target-element1>
+
+
+        <!-- -------------------------------------------------- -->
+
+
+        <h5>Example 2: One-way binding (downward)</h5>
+        <code>{notify: true}  [[]]</code>
+        <ul>
+            <li>changes to "jHostInput2" propagate downward to "prop1" on child </li>
+            <li>changes to "prop1" are ignored by host due to [[square-bracket]] syntax</li>
+            <li>child element "prop1" is notifying,  But host is ignoring the child changes due to [[square-bracket]] syntax</li>
+        </ul>
+
+
+        <p>jHostInput2 :: <input type="text" value="{{jHostInput2::input}}"/></p>
+        <j-target-element2 prop1="[[jHostInput2]]" ></j-target-element2>
+
+        <!-- -------------------------------------------------- -->
+
+        <h5>Example 3: One-way binding (downward)</h5>
+        <code>{notify: false}  {{}}</code>
+        <ul>
+            <li>changes to "jHostInput3" propagate downward to "prop1" on child</li>
+            <li>changes to "prop1" are not notified to host due to notify:false</li>
+            <li>since child element "prop1" is NOT notifying,  host will not get notified --even though {{curly braces}} syntax present in host</li>
+        </ul>
+
+        <p>jHostInput3 :: <input type="text" value="{{jHostInput3::input}}"/></p>
+        <j-target-element3 prop1="{{jHostInput3}}" ></j-target-element3>
+
+
+        <!-- -------------------------------------------------- -->
+
+        <h5>Example 4: One-way binding (upward only) (child-to-host)</h5>
+        <code>{notify: true, readOnly:true}  {{}} </code>
+        <p class="red"> Not Working </p>
+        <ul>
+            <li>changes to "jHostInput4" are ignored by child due to readOnly:true in prop1</li>
+            <li>"pop1" takes the value from host only once, after that changes made are not reflected </li>
+            <li>changes to "prop1" propagate upward to "jHostInput4" on host </li>
+
+        </ul>
+
+
+
+        <p>jHostInput4 :: <input type="text" value="{{jHostInput4::input}}"/></p>
+        <j-target-element4 prop1="{{jHostInput4}}" ></j-target-element4>
+
+
+        <!-- -------------------------------------------------- -->
+
+
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-data-flow-examples',
+            ready: function () {
+
+                this.jHostInput1 = "Jagadeesh1";
+                this.jHostInput2 = "Jagadeesh2";
+                this.jHostInput3 = "Jagadeesh3";
+                //this.jHostInput4 = "Jagadeesh4";
+
+            }
+        });
+    </script>
+</dom-module>

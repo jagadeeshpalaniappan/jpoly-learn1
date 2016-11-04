@@ -1,0 +1,138 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./j-emp-list.html">
+<link rel="import" href="./j-emp-list-arr-selector.html">
+
+<dom-module id="j-helper-elements">
+
+
+    <template>
+
+        <style>
+
+        </style>
+
+        <h3>Helper Templates</h3>
+
+        <h5>1. Simple (dom-repeat)</h5>
+
+        <template is="dom-repeat" items="{{employees}}">
+            <div># <span>{{index}}</span></div>
+            <div>First name: <span>{{item.first}}</span></div>
+            <div>Last name: <span>{{item.last}}</span></div>
+            <div>Type: <span>{{item.type}}</span></div>
+        </template>
+
+        <hr/>
+        <!--------------------------------------------->
+
+        <h5>2. Simple (dom-repeat) with Event Fn</h5>
+        <template is="dom-repeat" id="menu" items="{{menuItems}}">
+            <div>
+                <span>{{item.name}}</span>
+                <span>{{item.ordered}}</span>
+                <button on-click="order">Order</button>
+            </div>
+        </template>
+
+
+        <hr/>
+
+        <h5>3. Filter (dom-repeat)</h5>
+        <p>further changes to 'type' will not be reflected</p>
+        <template is="dom-repeat" items="{{employees}}" filter="isEngineer">
+            <div># <span>{{index}}</span></div>
+            <div>First name: <span>{{item.first}}</span></div>
+            <div>Last name: <span>{{item.last}}</span></div>
+            <div>Type: <span>{{item.type}}</span></div>
+        </template>
+
+
+        <p><button on-click="changeSecondItem">Change 2nd Item as Engineer</button></p>
+
+        <h5>4. Filter with Observe (dom-repeat)</h5>
+        <p>further changes to 'type' will be reflected</p>
+        <template is="dom-repeat" items="{{employees}}" filter="isEngineer" observe="type">
+            <div># <span>{{index}}</span></div>
+            <div>First name: <span>{{item.first}}</span></div>
+            <div>Last name: <span>{{item.last}}</span></div>
+            <div>Type: <span>{{item.type}}</span></div>
+        </template>
+
+
+
+        <hr/>
+
+
+        <h5>5. Search (dom-repeat)</h5>
+        <j-emp-list></j-emp-list>
+
+
+        <h5>6. Array Selector</h5>
+        <j-emp-list-arr-selector></j-emp-list-arr-selector>
+
+
+        <h5>7. If Template</h5>
+
+        <template is="dom-if" if="{{isJag}}">
+            <p>isJag: true</p>
+        </template>
+
+        <template is="dom-if" if="{{jag}}">
+            <p>jag has value in it.</p>
+        </template>
+
+        <template is="dom-if" if="{{jag === '123Jagadeesh'}}">
+            <p>jag has value 'Jagadeesh' (Not working)</p>
+        </template>
+
+        <template is="dom-if" if="{{jag1}}">
+            <p>jag1 has value in it.</p>
+        </template>
+
+
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-helper-elements',
+            ready: function () {
+
+                this.employees = [
+                    {first: 'Jagadeesh', last: 'P', type: 'engineer'},
+                    {first: 'Sally', last: 'Johnson', type: 'manager'},
+                    {first: 'Abhilash', last: 'Podishetti', type: 'engineer'},
+                    {first: 'Roopesh', last: 'Chowdari', type: 'lead'}
+                ];
+
+                this.menuItems = [
+                    {name: "Pizza", ordered: 0},
+                    {name: "Pasta", ordered: 0},
+                    {name: "Toast", ordered: 0}
+                ];
+
+                this.isJag = true;
+                this.jag = "Jagadeesh";
+                this.jag1 = "";
+
+
+            },
+            order: function (e) {
+
+                //Polymer attach, 'model' property in event obj --inside <dom-repeat>
+                var model = e.model;
+                model.set('item.ordered', model.item.ordered + 1);
+            },
+            isEngineer: function (item) {
+
+                return item.type == 'engineer' || item.type == 'lead';
+            },
+            changeSecondItem: function(){
+
+                this.set('employees.1.type', 'engineer');
+            }
+
+        });
+    </script>
+</dom-module>

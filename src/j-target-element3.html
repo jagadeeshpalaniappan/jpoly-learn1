@@ -1,0 +1,25 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="j-target-element3">
+    <template>
+
+        <p class="blue">(Target) Prop1 :: <input type="text" value="{{prop1::input}}"/></p>
+        <hr/>
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-target-element3',
+            properties: {
+                prop1:{
+                    type: String,
+                    //notify: false  (default) //need not to specify
+                }
+            },
+            ready: function () {
+                //console.log("<j-target-element3> Element is Ready");
+            }
+        });
+    </script>
+</dom-module>

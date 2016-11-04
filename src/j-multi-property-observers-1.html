@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="j-multi-property-observers-1">
+    <template>
+
+        <h5>Multi Property Observers 1</h5>
+
+        <p>{{prop1}} <button on-click="changeProp1">Change</button></p>
+
+        <p><input type="text" value="{{prop2::input}}"> </p>
+
+
+        <hr/>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'j-multi-property-observers-1',
+            properties: {
+                prop1:{
+                    type: String,
+                    value: "Jag1"
+                },
+                prop2:{
+                    type: String,
+                    value: "Jag2"
+                }
+            },
+            observers : ['prop1OrProp2Changed(prop1, prop2)'],
+            changeProp1: function(){
+
+                var prop1Val = this.get("prop1");
+                this.set("prop1", prop1Val+"--Changed");
+            },
+            prop1OrProp2Changed : function(prop1, prop2){
+                console.log("prop1 (new val): "+ prop1);
+                console.log("prop2 (new val): "+ prop2);
+            }
+        });
+    </script>
+</dom-module>
